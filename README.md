@@ -206,3 +206,5 @@ def self.greater_than(left, right)
 def self.lesser_than(left, right)
 def self.lesser_equals(left, right)
 ```
+
+To add conditions to a Query object it must call the add method **(query.add(condition))**
