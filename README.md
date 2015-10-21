@@ -150,6 +150,7 @@ query = provider.create_query mid
 
 #Query class
 **Dynamicloud::API::RecordQuery**
+
 This class provides a set of methods to add conditions, order by and group by clauses, projections, etc.
 
 ```ruby
