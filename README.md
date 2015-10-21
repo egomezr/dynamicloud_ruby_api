@@ -77,7 +77,7 @@ This method loads a record according to rid *(RecordID)* in model *(ModelID)*.
  ```ruby
 provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
  
-record = @provider.load_record 2, @model_id
+record = provider.load_record rid, mid
 
 puts record['email']
 ```
