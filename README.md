@@ -18,12 +18,11 @@ To read the ruby documentation click [here](http://www.dynamicloud.org/ "Dynamic
 
 This API provides components to execute operations on [Dynamicloud](http://www.dynamicloud.org/ "Dynamicloud") servers.  The main components and methods are the followings:
 
-1. [Model](#recordmodel)
-2. [Credential](#recordcredential)
-3. [@Bind](#annotation-bind)
-4. [DynamicProvider](#dynamicprovider)
+1. [Model](#model)
+2. [Credential](#credential)
+3. [DynamicProvider](#dynamicprovider)
   1. [DynamicProvider's methods](#methods)
-5. [Query](#query-class)
+4. [Query](#query-class)
   1. [RecordResults](#recordresults)
   - [Condition](#conditions-class)
   - [Conditions](#conditions-class)
@@ -31,7 +30,36 @@ This API provides components to execute operations on [Dynamicloud](http://www.d
   - [Order by](#order-by)
   - [Group by and Projection](#group-by-and-projection)
   - [Functions as a Projection](#functions-as-a-projection)
-6. [Update using selection](#update-using-selection)
-7. [Delete using selection](#delete-using-selection)
+5. [Update using selection](#update-using-selection)
+6. [Delete using selection](#delete-using-selection)
 
 These components will allow you to connect on Dynamicloud servers, authenticate and execute operations like *loadRecord*, *updateRecord*, *deleteRecord*, *get record's information according to selection*, *get record's information according to projection*, etc.  The next step is explain every components and how to execute operations.  
+
+# Model
+
+To load records in this API you're going to use a **Model ID**.  Every record belongs to a Model.
+
+#Credential
+
+To gain access in Dynamicloud servers you need to provide the API keys.  These APIs ware provided at moment of your registration.
+
+#DynamicProvider
+**DynamicProvider** provides important methods and can be used as follow:
+```ruby
+class DynamicProvider
+  def initialize(credential)
+    @credential = credential
+  end
+  .
+  .
+  .
+end
+```
+
+**First, let's explain the constructor of this class:**
+ ```ruby
+def initialize(credential)
+ ```
+This constructor receives a hash with the credential to gain access.  The credential hash is composed of Client Secret Key (CSK) and Application Client ID (ACI), these keys were provided at moment of your registration.
+ 
+#Methods
