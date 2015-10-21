@@ -163,3 +163,23 @@ def next
 ```
 
 With the Query object we can add conditions like EQUALS, IN, OR, AND, GREATER THAN, LESSER THAN, etc.  The query object is mutable and every call of its methods will return the same instance.
+
+#RecordResults (Dynamicloud::API::RecordResults)
+
+**This class provides three methods:**
+- **total_records:** The total records in RecordModel
+- **fast_returned_size:** The returned size of records that have matched with Query conditions
+- **records:** A list of records.
+
+**The uses of this class would be as a follow:**
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+
+query = provider.create_query mid
+results = query.add(Dynamicloud::API::Criteria::Conditions.not_equals('email', 'email@dynamicloud.org')).get_results
+
+puts results.fast_returned_size
+puts results.total_records
+puts results.records.length
+```
