@@ -81,3 +81,24 @@ record = provider.load_record rid, mid
 
 puts record['email']
 ```
+
+**Save Record**
+ ```ruby
+def save_record(mid, data)
+```
+This method saves a record (hash) with all the data.
+
+**For example, a call of this method would be:**
+ ```ruby
+
+record = {}
+record['name'] = 'Eleazar'
+record['last_name'] = 'Gomez'
+record['email'] = 'eeee@gmail.com'
+
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+
+provider.save_record mid, record #This method will fill the key 'rid' in record hash
+
+puts record['rid']
+```
