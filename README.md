@@ -46,13 +46,16 @@ To gain access in Dynamicloud servers you need to provide the API keys.  These A
 #DynamicProvider
 **DynamicProvider** provides important methods and can be used as follow:
 ```ruby
-class DynamicProvider
-  def initialize(credential)
-    @credential = credential
+module Dynamicloud
+  class API
+    class DynamicProvider
+    def initialize(credential)
+      @credential = credential
+    end
+    .
+    .
+    .
   end
-  .
-  .
-  .
 end
 ```
 
