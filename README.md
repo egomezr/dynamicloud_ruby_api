@@ -98,7 +98,7 @@ record['email'] = 'eeee@gmail.com'
 
 provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
 
-provider.save_record mid, record #This method will fill the key 'rid' in record hash
+provider.save_record mid, record #This method will fill the key 'rid' in record hash with the record ID
 
 puts record['rid']
 ```
