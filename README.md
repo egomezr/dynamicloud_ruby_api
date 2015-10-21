@@ -164,7 +164,8 @@ def next
 
 With the Query object we can add conditions like EQUALS, IN, OR, AND, GREATER THAN, LESSER THAN, etc.  The query object is mutable and every call of its methods will return the same instance.
 
-#RecordResults (Dynamicloud::API::RecordResults)
+#RecordResults
+**Dynamicloud::API::RecordResults**
 
 **This class provides three methods:**
 - **total_records:** The total records in RecordModel
