@@ -132,3 +132,21 @@ provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'ac
  
 provider.delete_record mid, rid
 ```
+
+**Create query**
+ ```ruby
+def create_query(mid)
+```
+This method returns a Query **(Dynamicloud::API::RecordQuery)**  to get records according specific conditions.
+
+**For example, a call of this method would be:**
+ ```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+ 
+query = provider.create_query mid
+```
+
+#Query class
+
+This class provides a set of methods to add conditions, order by and group by clauses, projections, etc.
+
