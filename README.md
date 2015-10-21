@@ -150,3 +150,16 @@ query = provider.create_query mid
 
 This class provides a set of methods to add conditions, order by and group by clauses, projections, etc.
 
+```ruby
+def add(condition)
+def asc
+def desc
+def set_count(count)
+def set_offset(offset)
+def get_results(projection = nil)
+def order_by(attribute)
+def group_by(attribute)
+def next
+```
+
+With the Query object we can add conditions like EQUALS, IN, OR, AND, GREATER THAN, LESSER THAN, etc.  The query object is mutable and every call of its methods will return the same instance.
