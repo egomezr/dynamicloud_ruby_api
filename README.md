@@ -66,3 +66,18 @@ def initialize(credential)
 This constructor receives a hash with the credential to gain access.  The credential hash is composed of Client Secret Key (CSK) and Application Client ID (ACI), these keys were provided at moment of your registration.
  
 #Methods
+
+**Load Record**
+```ruby
+def load_record(rid, mid)
+```
+This method loads a record according to rid *(RecordID)* in model *(ModelID)*.
+
+**For example, a call of this method would be:**
+ ```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+ 
+record = @provider.load_record 2, @model_id
+
+puts record['email']
+```
