@@ -102,3 +102,33 @@ provider.save_record mid, record #This method will fill the key 'rid' in record 
 
 puts record['rid']
 ```
+
+**Update Record**
+ ```ruby
+def update_record(mid, data)
+```
+This method updates the record (data['rid'])
+
+**For example, a call of this method would be:**
+ ```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+ 
+record = provider.load_record rid, mid
+
+record['email'] = 'email@dynamicloud.org'
+
+provider.update_record mid, record
+```
+
+**Delete Record**
+ ```ruby
+def delete_record(mid, rid)
+```
+This method deletes a record from theModel
+
+**For example, a call of this method would be:**
+ ```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+ 
+provider.delete_record mid, rid
+```
