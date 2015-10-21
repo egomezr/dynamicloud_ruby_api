@@ -94,7 +94,7 @@ This method saves a record (hash) with all the data.
 record = {}
 record['name'] = 'Eleazar'
 record['last_name'] = 'Gomez'
-record['email'] = 'eeee@gmail.com'
+record['email'] = 'rmail@dynamicloud.org'
 
 provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
 
