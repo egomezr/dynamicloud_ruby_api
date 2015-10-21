@@ -44,7 +44,7 @@ To load records in this API you're going to use a **Model ID**.  Every record be
 To gain access in Dynamicloud servers you need to provide the API keys.  These APIs ware provided at moment of your registration.
 
 #DynamicProvider
-Dynamicloud::API::DynamicProvider
+**Dynamicloud::API::DynamicProvider**
 
 **DynamicProvider** provides important methods and can be used as follow:
 ```ruby
@@ -149,7 +149,7 @@ query = provider.create_query mid
 ```
 
 #Query class
-Dynamicloud::API::RecordQuery
+**Dynamicloud::API::RecordQuery**
 This class provides a set of methods to add conditions, order by and group by clauses, projections, etc.
 
 ```ruby
