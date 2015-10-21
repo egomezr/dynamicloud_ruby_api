@@ -187,3 +187,22 @@ puts results.fast_returned_size
 puts results.total_records
 puts results.records.length
 ```
+
+#Conditions class
+
+This class provides a set of methods to build conditions and add them in query object
+```ruby
+def self.and(left, right)
+def self.or(left, right)
+def self.in(left, values)
+def self.not_in(left, values)
+def self.not_in(left, values)
+def self.like(left, like)
+def self.not_like(left, like)
+def self.equals(left, right)
+def self.not_equals(left, right)
+def self.greater_equals(left, right)
+def self.greater_than(left, right)
+def self.lesser_than(left, right)
+def self.lesser_equals(left, right)
+```
