@@ -341,7 +341,6 @@ provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'ac
 query = provider.create_query(mid)
 query.add(Dynamicloud::API::Criteria::Conditions.greater_than('age', 24))
 
-
 # This method will use the data hash and the query object to update only the records that match with the selection.
 
 provider.update query, {'name' => 'Eleazar'}
@@ -358,7 +357,6 @@ provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'ac
 
 query = provider.create_query(mid)
 query.add(Dynamicloud::API::Criteria::Conditions.greater_than('age', 24))
-
 
 # This method will delete the records that match with the selection.
 
