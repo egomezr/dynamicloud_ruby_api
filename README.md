@@ -248,15 +248,15 @@ query = provider.create_query(mid)
 query.add(Dynamicloud::API::Criteria::Conditions.like('name', 'Eleaz%'))
 query.add(Dynamicloud::API::Criteria::Conditions.equals('age', 33))
 
-results = query.get_results;
-results.getRecords().each do |record|
+results = query.get_results
+results.records.each do |record|
   puts record['email']
 end
 
-results = query.next();
+results = query.next
 
-//Loop with the next 15 records
-results.getRecords().each do |record|
+#Loop with the next 15 records
+results.records.each do |record|
   puts record['email']
 end
 ```
@@ -270,23 +270,61 @@ query = provider.create_query(mid)
 query.add(Dynamicloud::API::Criteria::Conditions.like('name', 'Eleaz%'))
 query.add(Dynamicloud::API::Criteria::Conditions.equals('age', 33))
 
-//Every call will fetch max 10 records and will start from eleventh record.
+#Every call will fetch max 10 records and will start from eleventh record.
 query.set_offset(1).set_count(1)
 
 results = query.get_results
-results.getRecords().each do |record|
+results.records.each do |record|
   String email = record['email']
 end
 
-//This call will fetch max 10 records and will start from twenty first record.
+#This call will fetch max 10 records and will start from twenty first record.
 results = query.next
 
-//Loop through the next 10 records
-results.getRecords().each do |record|
-  String email = record['email']
+#Loop through the next 10 records
+results.records.each do |record|
+  email = record['email']
 end
 ```
 
 #Order by
 
 To fetch records ordered by a specific field, the query object provides the method **order_by**.  To sort the records in a descending/ascending order you must call asc/desc method after call order_by method.
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+
+query = provider.create_query(mid)
+query.add(Dynamicloud::API::Criteria::Conditions.like('name', 'Eleaz%'))
+query.add(Dynamicloud::API::Criteria::Conditions.equals('age', 33))
+
+#Every call will fetch max 10 records and will start from eleventh record.
+query.set_count(10).set_offset(1).order_by('email').asc # Here you can call desc method
+
+results.records.each do |record|
+  email = record['email']
+end
+```
+
+#Group by and Projection
+
+To group by a specifics fields, the query object provides the method **group_by**.  To use this clause, you must set the projection to the query using **set_projection** method.
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+
+query = provider.create_query(mid)
+query.add(Dynamicloud::API::Criteria::Conditions.like('name', 'Eleaz%'))
+query.add(Dynamicloud::API::Criteria::Conditions.equals('age', 33))
+
+#Every call will fetch max 10 records and will start from eleventh record.
+query.set_count(10).set_offset(1).order_by('email').asc # Here you can call desc method
+
+#These are the fields in your projection
+query.group_By('name, email');
+
+results = query.get_results(['name', 'email']);
+results.records.each do |record|
+  email = record['email']
+end
+```
