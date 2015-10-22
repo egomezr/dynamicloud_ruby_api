@@ -238,3 +238,55 @@ Query class provides a method called **get_results(projection = nil)**, this met
 Query class provides a method to walk across the records of a Model.  Imagine a model with a thousand of records, obviously you shouldn't load the whole set of records, you need to find a way to load a sub-set by demand.
 
 The method to meet this goal is **next**.  Basically, the next method will increase the offset automatically and will execute the request with the previous conditions. By default, offset and count will have 0 and 15 respectively.
+
+**The uses of this method would be as a follow:**
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+
+query = provider.create_query(mid)
+query.add(Dynamicloud::API::Criteria::Conditions.like('name', 'Eleaz%'))
+query.add(Dynamicloud::API::Criteria::Conditions.equals('age', 33))
+
+results = query.get_results;
+results.getRecords().each do |record|
+  puts record['email']
+end
+
+results = query.next();
+
+//Loop with the next 15 records
+results.getRecords().each do |record|
+  puts record['email']
+end
+```
+
+If you want to set an **offset** or **count**, follow this guideline:
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+
+query = provider.create_query(mid)
+query.add(Dynamicloud::API::Criteria::Conditions.like('name', 'Eleaz%'))
+query.add(Dynamicloud::API::Criteria::Conditions.equals('age', 33))
+
+//Every call will fetch max 10 records and will start from eleventh record.
+query.set_offset(1).set_count(1)
+
+results = query.get_results
+results.getRecords().each do |record|
+  String email = record['email']
+end
+
+//This call will fetch max 10 records and will start from twenty first record.
+results = query.next
+
+//Loop through the next 10 records
+results.getRecords().each do |record|
+  String email = record['email']
+end
+```
+
+#Order by
+
+To fetch records ordered by a specific field, the query object provides the method **order_by**.  To sort the records in a descending/ascending order you must call asc/desc method after call order_by method.
