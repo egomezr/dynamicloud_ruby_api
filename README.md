@@ -208,3 +208,33 @@ def self.lesser_equals(left, right)
 ```
 
 To add conditions to a Query object it must call the add method **(query.add(condition))**
+
+**For example:**
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+
+query = (provider.create_query(mid)).add(Dynamicloud::API::Criteria::Conditions.like('name', 'Eleaz%'))
+```
+
+Every call of add method in object Query will put the Condition in a ordered list of conditions, that list will be joint as a AND condition.  So, if you add two conditions as follow:
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+
+query = provider.create_query(mid)
+query.add(Dynamicloud::API::Criteria::Conditions.like('name', 'Eleaz%'))
+query.add(Dynamicloud::API::Criteria::Conditions.equals('age', 33))
+```
+
+These two calls of add method will produce something like this:
+
+name like 'Eleazar%' **AND** age = 33
+
+Query class provides a method called **get_results(projection = nil)**, this method will execute a request using the *ModelID* and *Conditions*. The response from Dynamicloud will be encapsulated in the object **RecordResults**
+
+#Next, Offset and Count methods
+
+Query class provides a method to walk across the records of a Model.  Imagine a model with a thousand of records, obviously you shouldn't load the whole set of records, you need to find a way to load a sub-set by demand.
+
+The method to meet this goal is **next**.  Basically, the next method will increase the offset automatically and will execute the request with the previous conditions. By default, offset and count will have 0 and 15 respectively.
