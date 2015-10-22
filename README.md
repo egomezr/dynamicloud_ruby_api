@@ -335,7 +335,7 @@ There are situations where you need to update records using a specific selection
 
 In this example we are going to update the **name** where age > 24
 
-```java
+```ruby
 provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
 
 query = provider.create_query(mid)
@@ -353,7 +353,7 @@ There are situations where you need to delete records using a specific selection
 
 In this example we are going to delete the records where age > 24
 
-```java
+```ruby
 provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
 
 query = provider.create_query(mid)
