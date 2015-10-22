@@ -328,3 +328,39 @@ results.records.each do |record|
   email = record['email']
 end
 ```
+
+#Update using selection
+
+There are situations where you need to update records using a specific selection.
+
+In this example we are going to update the **name** where age > 24
+
+```java
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+
+query = provider.create_query(mid)
+query.add(Dynamicloud::API::Criteria::Conditions.greater_than('age', 24))
+
+
+# This method will use the data hash and the query object to update only the records that match with the selection.
+
+provider.update query, {'name' => 'Eleazar'}
+```
+
+#Delete using selection
+
+There are situations where you need to delete records using a specific selection.
+
+In this example we are going to delete the records where age > 24
+
+```java
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+
+query = provider.create_query(mid)
+query.add(Dynamicloud::API::Criteria::Conditions.greater_than('age', 24))
+
+
+# This method will delete the records that match with the selection.
+
+provider.delete query
+```
