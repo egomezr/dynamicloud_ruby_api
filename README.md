@@ -231,7 +231,7 @@ These two calls of add method will produce something like this:
 
 name like 'Eleazar%' **AND** age = 33
 
-Query class provides a method called **get_results(projection = nil)**, this method will execute a request using the *ModelID* and *Conditions*. The response from Dynamicloud will be encapsulated in the object **RecordResults**
+Query class provides a method called **get_results(projection = nil)**, this method will execute a request using the *ModelID*, *Conditions* and the *projection* (if was passed). The response from Dynamicloud will be encapsulated in the object **RecordResults**
 
 #Next, Offset and Count methods
 
