@@ -329,6 +329,21 @@ results.records.each do |record|
 end
 ```
 
+#Functions as a Projection
+
+Query object provides the setProjection method to specify the fields you want to fetch in a query.  In this method you can set the function you want to call. Every function must has an alias to bind it with a setMethod in BoundInstance object.
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
+
+query = provider.create_query(mid)
+
+query.add(Dynamicloud::API::Criteria::Conditions.like('name', 'Eleaz%'))
+
+record = query.get_results(['avg(age) as average']).records[0]
+average = record['average']
+```
+
 #Update using selection
 
 There are situations where you need to update records using a specific selection.
