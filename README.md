@@ -7,7 +7,7 @@ Ruby SDK 2.1.5 and later, you can download it on [Ruby  site](https://www.ruby-l
 
 #Main files
 
-- **dist/dynamicloud-1.0.0.gem**
+- You can install this gem in your system using RubyGems command 'gem install dynamicloud' or put in your gemfile the following: gem 'dynamicloud', '~> 1.0'
 - **example/blog-test**
 
 #Rubydoc
