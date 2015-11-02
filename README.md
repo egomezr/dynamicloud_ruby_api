@@ -377,5 +377,5 @@ query.add(Dynamicloud::API::Criteria::Conditions.greater_than('age', 24))
 
 # This method will delete the records that match with the selection.
 
-provider.delete query
+provider.delete query, mid
 ```
