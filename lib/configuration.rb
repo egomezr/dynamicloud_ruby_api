@@ -1,5 +1,3 @@
-require 'yaml'
-
 # This class maintains properties about api configuration.
 # @author Eleazar Gomez
 # @version 1.0.0

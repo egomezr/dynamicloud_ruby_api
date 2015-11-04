@@ -7,12 +7,12 @@ require 'dynamic_criteria'
 # @version 1.0.0
 # @since 10/29/15
 class BlogManager
-  CSK = 'csk#5c6f68d48ff4905a80d396a465580d34fc6e8fa2'
-  ACI = 'aci#81969f0abe4d15d4304411e65c6557e64b3b6576'
+  CSK = 'csk#...'
+  ACI = 'aci#...'
 
-  USER_MODEL_ID = 980190977
-  BLOG_MODEL_ID = 980190978
-  POST_MODEL_ID = 980190979
+  USER_MODEL_ID = 111111111
+  BLOG_MODEL_ID = 222222222
+  POST_MODEL_ID = 333333333
 
   # This method will create a user in Dynamicloud model using username and email
   #
