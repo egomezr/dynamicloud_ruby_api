@@ -19,6 +19,65 @@ module Dynamicloud
       end
       # End of Condition class
 
+      # This enum represents the different Join types
+      class JoinType
+        attr_accessor :type
+
+        def initialize(type)
+          @type = type
+        end
+
+        LEFT = JoinType.new 1
+        RIGHT = JoinType.new 2
+        INNER = JoinType.new 3
+        LEFT_OUTER = JoinType.new 4
+        RIGHT_OUTER = JoinType.new 5
+
+        # This method returns the text according to this Join Type.
+        #
+        # @return the text according to this Join Type.
+        def to_string
+          case (@type)
+            when LEFT.type
+              return 'left'
+            when RIGHT.type
+              return 'right'
+            when INNER.type
+              return 'inner'
+            when LEFT_OUTER.type
+              return 'left outer'
+            when RIGHT_OUTER.type
+              return 'right outer'
+            else
+              return 'inner'
+          end
+        end
+      end
+
+      #This class represents a Join clause
+      class JoinClause < Condition
+        # Builds a JoinClause using type, model and compatible condition.
+        #
+        # @param join_type      join type
+        # @param model_id         target model id
+        # @param aliass        alias to use with this target model.  You don't need to concatenate the alias in join condition.
+        # @param join_condition compatible join condition
+        def initialize(join_type, model_id, aliass, join_condition)
+          @join_type = join_type
+          @model_id = model_id
+          @join_condition = join_condition
+          @alias = aliass
+        end
+
+        # This method will return a String of this condition
+        # @param parent this is the parent of this condition
+        # @return a json
+        def to_record_string(parent)
+          '{ "type": "' + @join_type.to_string + '", "alias": "' + @alias + '", "target": "' + @model_id.to_s + '", "on": "' + @join_condition + '" }'
+        end
+      end
+      # End of JoinClause class
+
       class ANDCondition < Condition
         # Will build an and condition using two part.
         # @param left  left part of this and condition
@@ -391,6 +450,56 @@ module Dynamicloud
         # @return a built condition.
         def self.lesser_equals(left, right)
           inner_equals(left, right, '<')
+        end
+
+        # Builds a left join clause.
+        #
+        # @param model_id         target model id of this join
+        # @param aliass         attached alias to this target model
+        # @param Condition on condition of this join clause
+        # @return a Join Clause as a condition
+        def self.left_join(model_id, aliass, condition)
+          return JoinClause.new(JoinType::LEFT, model_id, aliass, condition);
+        end
+
+        # Builds a left outer join clause.
+        #
+        # @param model_id         target model id of this join
+        # @param aliass         attached alias to this target model
+        # @param Condition on condition of this join clause
+        # @return a Join Clause as a condition
+        def self.left_outer_join(model_id, aliass, condition)
+          return JoinClause.new(JoinType::LEFT_OUTER, model_id, aliass, condition);
+        end
+
+        # Builds a right join clause.
+        #
+        # @param model_id         target model id of this join
+        # @param aliass         attached alias to this target model
+        # @param Condition on condition of this join clause
+        # @return a Join Clause as a condition
+        def self.right_join(model_id, aliass, condition)
+          return JoinClause.new(JoinType::RIGHT, model_id, aliass, condition);
+        end
+
+        # Builds a right outer join clause.
+        #
+        # @param model_id         target model id of this join
+        # @param aliass         attached alias to this target model
+        # @param Condition on condition of this join clause
+        # @return a Join Clause as a condition
+        def self.right_outer_join(model_id, aliass, condition)
+          return JoinClause.new(JoinType::RIGHT_OUTER, model_id, aliass, condition);
+        end
+
+        # Builds a inner join clause.
+        #
+        # @param model_id         target model id of this join
+        # @param aliass         attached alias to this target model
+        # @param Condition on condition of this join clause
+        # @return a Join Clause as a condition
+        def self.inner_join(model_id, aliass, condition)
+          return JoinClause.new(JoinType::INNER, model_id, aliass, condition);
         end
 
         # This method will build a not equals condition.

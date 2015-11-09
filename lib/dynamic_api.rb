@@ -31,13 +31,31 @@ module Dynamicloud
         @credentials = nil
         @order_by = nil
         @group_by = nil
-        #@projection = nil
         @offset = -1
         @count = -1
         @current_callback = nil
         @list_was_called = false
         @conditions = []
+        @joins = []
+        @alias = nil
         @current_projection = nil
+      end
+
+      # Attaches a alias to this query, the model in this query will use this alias in Join Clauses or whatever situation where alias is needed.
+      #
+      # @param aliass alias to attach
+      # @return this instance of Query
+      def set_alias(aliass)
+        @alias = aliass
+      end
+
+      # Add a join to the list of joins
+      #
+      # @param join_clause join clause
+      # @return this instance of Query
+      def join(join_clause)
+        @joins.push join_clause
+        self
       end
 
       # Apply a desc ordering to the current order by object
@@ -117,7 +135,8 @@ module Dynamicloud
       # @param projection projection to use in this operation
       def get_results(projection = nil)
         selection = Dynamicloud::API::DynamicloudHelper.build_string(get_conditions, get_group_by, get_order_by,
-                                                                     (Dynamicloud::API::DynamicloudHelper.build_projection(projection)))
+                                                                     (Dynamicloud::API::DynamicloudHelper.build_projection(projection)),
+                                                                     @alias, @joins)
         @current_projection = projection
 
         url = Configuration::PROPERTIES.get_property :url
@@ -148,7 +167,7 @@ module Dynamicloud
       # @param attribute attribute by this query will be ordered.
       # @return this instance of Query
       def order_by(attribute)
-        @order_by = OrderByClause.asc(attribute)
+        @order_by = Dynamicloud::API::Criteria::OrderByClause.asc(attribute)
         self
       end
 
@@ -157,7 +176,7 @@ module Dynamicloud
       # @param attribute attribute by this query will group.
       # @return this instance of Query
       def group_by(attribute)
-        @group_by = GroupByClause.new(attribute)
+        @group_by = Dynamicloud::API::Criteria::GroupByClause.new(attribute)
         self
       end
 
@@ -693,8 +712,9 @@ module Dynamicloud
 
       # Builds a compatible String to use in service executions
       # @return compatible String
-      def self.build_string(conditions, group_by, order_by, projection)
-        built = '{' + (projection ? projection : '') + '"where": {'
+      def self.build_string(conditions, group_by, order_by, projection, aliass = nil, joins = [])
+        built = '{' + (aliass == nil ? '' : '"alias": "' + aliass + '", ') + build_join_tag(joins) +
+            ((projection.nil? || projection.eql?('') || projection.strip!.eql?('')) ? '' : (', ' + projection)) + ', "where": {'
 
         if conditions.length > 0
           global = conditions[0]
@@ -734,7 +754,27 @@ module Dynamicloud
           cols = cols + (cols == '' ? '' : ',') + '"' + field + '"'
         end
 
-        columns + cols + '], '
+        columns + cols + ']'
+      end
+
+      # This method builds the tag joins as follows:
+      # i.e: "joins": [ { "type": "full", "alias": "user", "target": "3456789", "on": { "user.id" : "languages.id" } } ]
+      #
+      # @param joins list of join clauses
+      # @return the representation of a join tag.
+      def self.build_join_tag(joins)
+        tag = '"joins": ['
+
+        unless joins.nil?
+          first_time = true
+          joins.each do |clause|
+            tag += (first_time ? '' : ', ') + clause.to_record_string(Dynamicloud::API::Criteria::Condition::ROOT)
+
+            first_time = false
+          end
+        end
+
+        return tag + ']'
       end
 
       # This utility will build a RecordResults object
