@@ -40,7 +40,7 @@ class Configuration
         :url_update_selection => '/api_records/{csk}/{aci}/update_using_selection/{mid}',
         # this url must be executed using post method
         :url_delete_selection => '/api_records/{csk}/{aci}/delete_using_selection/{mid}',
-        :version => '1.0.0'
+        :version => '1.0.2'
     }
   end
 
