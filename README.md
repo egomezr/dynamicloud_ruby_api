@@ -14,7 +14,7 @@ Ruby SDK 2.1.5 and later, you can download it on [Ruby  site](https://www.ruby-l
 
 #Rubydoc
 
-To read the Ruby API documentation click [here](http://www.rubydoc.info/gems/dynamicloud/1.0.2" Dynamicloud Ruby API documentation")
+To read the Ruby API documentation click [here](http://www.rubydoc.info/gems/dynamicloud/1.0.2 "Dynamicloud Ruby API documentation")
 
 # Getting started
 
