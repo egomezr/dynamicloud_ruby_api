@@ -1,4 +1,4 @@
-# Dynamicloud Ruby API v1.0.3 (BETA)
+# Dynamicloud Ruby API v1.0.4 (BETA)
 This Ruby API  helps you to use the power of Dynamicloud.  This API follows our Rest documentation to execute CRUD operations according to http methods.
 
 ####**If you want to test Dynamicloud as a beta tester, please send an email to: social@dynamicloud.org with your Name and Country.**
@@ -14,7 +14,7 @@ Ruby SDK 2.1.5 and later, you can download it on [Ruby  site](https://www.ruby-l
 
 #Rubydoc
 
-To read the Ruby API documentation click [here](http://www.rubydoc.info/gems/dynamicloud/1.0.3 "Dynamicloud Ruby API documentation")
+To read the Ruby API documentation click [here](http://www.rubydoc.info/gems/dynamicloud/1.0.4 "Dynamicloud Ruby API documentation")
 
 # Getting started
 
