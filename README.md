@@ -280,7 +280,88 @@ results = query.get_results
 .
 ```
 
+#Exists condition
 
+Exists condition is a way to execute correlated queries and get results if a specific condition is true.  For example, imagine the following SQL query:
+
+```sql
+-- Here we want to get the VIP users
+SELECT * FROM users u WHERE EXISTS (SELECT * FROM vip_users v WHERE v.user_id = u.id)
+```
+
+**Let's do it using Dynamicloud's library:**
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => '...'})
+
+query = provider.create_query(userModel)
+
+# This is the alias to the Model, this alias is necessary if you need to execute an exists using two models
+query.set_alias("u")
+
+exists = Dynamicloud::API::Criteria::Conditions.exists(vipmodel, 'v')
+
+# The dollar symbols are to avoid to use right part as a String, but literally v.user_id = u.id
+exists.add(Dynamicloud::API::Criteria::Conditions.equals('v.user_id', '$u.id$'))
+
+query.add(exists)
+
+results = query.get_results
+.
+.
+.
+```
+
+**If you want to get the users without vip label:**
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => '...'})
+
+query = provider.create_query(userModel)
+
+# This is the alias to the Model, this alias is necessary if you need to execute an exists using two models
+query.set_alias("u")
+
+exists = Dynamicloud::API::Criteria::Conditions.not_exists(vipmodel, 'v')
+
+# The dollar symbols are to avoid to use right part as a String, but literally v.user_id = u.id
+exists.add(Dynamicloud::API::Criteria::Conditions.equals('v.user_id', '$u.id$'))
+
+query.add(exists)
+
+results = query.get_results
+.
+.
+.
+```
+
+**Another capability in Exists condition is the JoinClauses to execute correlated queries with Joins, for example:**
+```sql
+SELECT * FROM users u WHERE EXISTS (SELECT * FROM vip_users v JOIN vip_country c ON c.vip_id = v.id WHERE v.user_id = u.id AND c.country_iso = 'BR')
+```
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => '...'})
+
+query = provider.create_query(userModel)
+
+# This is the alias to the Model, this alias is necessary if you need to execute an exists using two models
+query.set_alias('u')
+
+exists = Dynamicloud::API::Criteria::Conditions.exists(vipmodel, 'v')
+
+exists.join(Dynamicloud::API::Criteria::Conditions.innerJoin(countryModel, 'c', 'c.vip_id = v.id'))
+
+# The dollar symbols are to avoid to use right part as a String, but literally v.user_id = u.id
+exists.add(Dynamicloud::API::Criteria::Conditions.and(Dynamicloud::API::Criteria::Conditions.equals('v.user_id', '$u.id$'), Dynamicloud::API::Criteria::Conditions.equals('c.country_iso', 'BR')))
+
+query.add(exists)
+
+results = query.get_results
+.
+.
+.
+```
 
 #Join Clause
 
