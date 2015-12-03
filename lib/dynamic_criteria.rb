@@ -126,6 +126,105 @@ module Dynamicloud
       end
       # End of EqualCondition class
 
+      class BetweenCondition < Condition
+
+        # Builds an instance with a specific field whose value should be between left and right
+        #
+        # @param field field in this condition
+        # @param left  left part of the between condition
+        # @param right right part of the between condition
+        def initialize(field, left, right)
+          @field = field
+          @left = left
+          @right = right
+        end
+
+        # This method will return a String of this condition
+        # @param parent this is the parent of this condition
+        # @return a json
+        def to_record_string(parent)
+          "\"" + @field + "\": { \"$between\": [" + (transform_left_right) + ']}'
+        end
+
+        private
+        def transform_left_right
+          result = (@left.is_a?(String) ? ("\"" + @left + "\"") : @left.to_s)
+          result += ','
+          result + (@right.is_a?(String) ? ("\"" + @right + "\"") : @right.to_s)
+        end
+      end
+      # End of BetweenCondition class
+
+      class ExistsCondition < Condition
+        # Builds an instance with a specific model an alias
+        #
+        # @param model_id Model ID
+        # @param aliass alias to this model
+        def initialize(model_id, aliass, not_exists)
+          @model_id = model_id
+          @aliass = aliass
+          @not_exists = not_exists
+          @conditions = []
+          @joins = []
+        end
+
+        # This method will add a new condition to this ExistsCondition.
+        #                                                  *
+        # @param condition new condition to a list of conditions to use
+        # @return this instance of ExistsCondition
+        def add(condition)
+          @conditions.push(condition)
+          self
+        end
+
+        # Add a join to the list of joins
+        #
+        # @param join join clause
+        # @return this instance of ExistsCondition
+        def join(join)
+          @joins.push(join)
+          self
+        end
+
+        # Sets the related alias to the model
+        #
+        # @param aliass related alias to the model
+        def set_alias(aliass)
+          @alias = aliass
+        end
+
+        # Sets the related model to this exists condition.
+        # With this model, you can
+        #
+        # @param model_id related model
+        def set_model(model_id)
+          @model_id = model_id
+        end
+
+        # This method will return a String of this condition
+        #
+        # @param parent this is the parent of this condition
+        # @return a json
+        def to_record_string(parent)
+          built = (@not_exists ? "\"$nexists\"" : "\"$exists\"") + ': { ' + Dynamicloud::API::DynamicloudHelper.build_join_tag(@joins) + ', ' + (@model_id.nil? ? '' : ("\"model\": " + @model_id.to_s + ', ')) + (@aliass.nil? ? '' : ("\"alias\": \"" + @aliass + "\", ")) + "\"where\": {"
+
+          if @conditions.length > 0
+            global = @conditions[0]
+            if @conditions.length > 1
+              @conditions = @conditions[1..@conditions.length]
+              @conditions.each do |condition|
+                global = Dynamicloud::API::Criteria::ANDCondition.new global, condition
+              end
+            end
+
+            built = built + global.to_record_string(Dynamicloud::API::Criteria::Condition::ROOT)
+          end
+
+          built + '}}'
+        end
+      end
+      # End of ExistsCondition class
+
       class GreaterLesser < Condition
         def initialize(left, right, greater_lesser)
           @greater_lesser = greater_lesser
@@ -367,6 +466,34 @@ module Dynamicloud
         # @return A built condition.
         def self.or(left, right)
           ORCondition.new(left, right)
+        end
+
+        # Builds a between condition
+        #
+        # @param field field in this condition
+        # @param left  left part of the between condition
+        # @param right right part of the between condition
+        # @return a new instance of BetweenCondition
+        def self.between(field, left, right)
+          return BetweenCondition.new(field, left, right)
+        end
+
+        # Creates a new instance of ExistsCondition
+        #
+        # @param model_id model ID
+        # @param aliass alias to this model (optional)
+        # @return a new instance of ExistsCondition
+        def self.exists(model_id = nil, aliass = nil)
+          ExistsCondition.new(model_id, aliass, false)
+        end
+
+        # Creates a new instance of ExistsCondition
+        #
+        # @param model_id model ID
+        # @param aliass alias to this model (optional)
+        # @return a new instance of ExistsCondition
+        def self.not_exists(model_id = nil, aliass = nil)
+          ExistsCondition.new(model_id, aliass, true)
         end
 
         # It will an in condition using an array of values.

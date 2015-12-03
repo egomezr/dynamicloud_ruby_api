@@ -18,25 +18,26 @@ module DynamicService
       http.connect_timeout = 10
 
       headers['User-Agent'] = 'Dynamicloud client'
-      headers['APIVersion'] = Configuration::PROPERTIES.get_property :version
-      headers['Language'] = 'Ruby'
+      headers['API_Version'] = Configuration::PROPERTIES.get_property :version
+      headers['Dynamicloud_API'] = 'Ruby'
+      headers['Accept-Encoding'] = 'gzip, deflate'
 
       # download file
       if destiny
-        destiny.write(http.get_content(service_url))
+        destiny.write(http.get_content(service_url, headers))
         return
       end
 
       if method.eql? 'post'
-        return handle_response(http.post service_url, params)
+        return handle_response(http.post service_url, params, headers)
       end
 
       if method.eql? 'get'
-        return handle_response(http.get service_url, params)
+        return handle_response(http.get service_url, params, headers)
       end
 
       if method.eql? 'delete'
-        return handle_response(http.delete service_url, params)
+        return handle_response(http.delete service_url, params, headers)
       else
         raise 'Unsupported Http Method - "' << method.to_s << '"'
       end
