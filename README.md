@@ -1,4 +1,4 @@
-# Dynamicloud Ruby API v1.0.1 (BETA)
+# Dynamicloud Ruby API v1.0.3 (BETA)
 This Ruby API  helps you to use the power of Dynamicloud.  This API follows our Rest documentation to execute CRUD operations according to http methods.
 
 ####**If you want to test Dynamicloud as a beta tester, please send an email to: social@dynamicloud.org with your Name and Country.**
@@ -14,7 +14,7 @@ Ruby SDK 2.1.5 and later, you can download it on [Ruby  site](https://www.ruby-l
 
 #Rubydoc
 
-To read the Ruby API documentation click [here](http://beta.dynamicloud.org/rdoc/index.html "Dynamicloud Ruby API documentation")
+To read the Ruby API documentation click [here](http://www.rubydoc.info/gems/dynamicloud/1.0.3 "Dynamicloud Ruby API documentation")
 
 # Getting started
 
@@ -28,6 +28,7 @@ This API provides components to execute operations on [Dynamicloud](http://www.d
   1. [RecordResults](#recordresults)
   - [Condition](#conditions-class)
   - [Conditions](#conditions-class)
+  - [Join clause](#join-clause)
   - [Next, Offset and Count methods](#next-offset-and-count-methods)
   - [Order by](#order-by)
   - [Group by and Projection](#group-by-and-projection)
@@ -161,6 +162,8 @@ def asc
 def desc
 def set_count(count)
 def set_offset(offset)
+def set_alias(aliass)
+def join(join_clause)
 def get_results(projection = nil)
 def order_by(attribute)
 def group_by(attribute)
@@ -207,6 +210,11 @@ def self.greater_equals(left, right)
 def self.greater_than(left, right)
 def self.lesser_than(left, right)
 def self.lesser_equals(left, right)
+def self.left_join(model_id, aliass, condition)
+def self.left_outer_join(model_id, aliass, condition)
+def self.right_join(model_id, aliass, condition)
+def self.right_outer_join(model_id, aliass, condition)
+def self.inner_join(model_id, aliass, condition)
 ```
 
 To add conditions to a Query object it must call the add method **(query.add(condition))**
@@ -234,6 +242,43 @@ These two calls of add method will produce something like this:
 name like 'Eleazar%' **AND** age = 33
 
 Query class provides a method called **get_results(projection = nil)**, this method will execute a request using the *ModelID*, *Conditions* and the *projection* (if was passed). The response from Dynamicloud will be encapsulated in the object **RecordResults**
+
+#Join Clause
+
+With Join Clause you can execute conditions and involve more than one model.  This is useful in situations when you need to compare data between two or more models and get information in one execution.
+
+**A Join Clause is composed by: Model ID, Type, Alias and ON condition:**
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => '...'})
+
+# Query has the main model 'user'
+query = provider.create_query(123)
+
+# This is the alias to '123', this alias is necessary to use JoinClause
+query.set_alias 'user'
+
+# This is the model 456 'languages' to join with model 'user'
+#
+# Conditions class provides: inner_join, left_join, right_join, left_outer_join and right_outer_join.
+# If you need to add more than one join, you have to call query.join(...) and will be added in the query join list.
+#
+# This is an example to get the count of languages of every user.
+query.join(Dynamicloud::API::Criteria::Conditions.inner_join(456, 'lang', 'user.id = lang.modelid'))
+
+# The Join Clause could be executed using a selection
+query.add(Dynamicloud::API::Criteria::Conditions.greaterThan('user.age', 25))
+
+# You can group the results to use sum, count, avg, etc.
+query.group_by(['user.id'])
+
+results = query.get_results(['user.id as userid', 'count(1) as count'])
+
+if results.fast_returned_size > 0 
+  rescord = results.records[0];
+  // Code here to manipulate the results
+end
+```
 
 #Next, Offset and Count methods
 
