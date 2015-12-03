@@ -28,6 +28,8 @@ This API provides components to execute operations on [Dynamicloud](http://www.d
   1. [RecordResults](#recordresults)
   - [Condition](#conditions-class)
   - [Conditions](#conditions-class)
+  - [Between condition](#between-condition)
+  - [Exists condition](#exists-condition)
   - [Join clause](#join-clause)
   - [Next, Offset and Count methods](#next-offset-and-count-methods)
   - [Order by](#order-by)
@@ -205,6 +207,9 @@ def self.not_in(left, values)
 def self.like(left, like)
 def self.not_like(left, like)
 def self.equals(left, right)
+def self.between(field, left, right)
+def self.exists(model_id = nil, aliass = nil)
+def self.not_exists(model_id = nil, aliass = nil)
 def self.not_equals(left, right)
 def self.greater_equals(left, right)
 def self.greater_than(left, right)
@@ -242,6 +247,40 @@ These two calls of add method will produce something like this:
 name like 'Eleazar%' **AND** age = 33
 
 Query class provides a method called **get_results(projection = nil)**, this method will execute a request using the *ModelID*, *Conditions* and the *projection* (if was passed). The response from Dynamicloud will be encapsulated in the object **RecordResults**
+
+#Between condition
+
+With this condition you can build selections like **age between 24 and 30** or **birthdate bewteen '2010-01-01 00:00:00' and '2015-11-01 23:59:59'**.
+
+**A Between condition is composed by: field's identifier and an interval (left and right)**
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => '...'})
+
+query = provider.create_query(123)
+query.add(Dynamicloud::API::Criteria::Conditions.between('agefield', 20, 25))
+
+results = query.get_results
+.
+.
+.
+```
+
+**Using dates:**
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => '...'})
+
+query = provider.create_query(123)
+query.add(Dynamicloud::API::Criteria::Conditions.between('birthdate', '2010-01-01 00:00:00', '2015-11-01 23:59:59'))
+
+results = query.get_results
+.
+.
+.
+```
+
+
 
 #Join Clause
 
