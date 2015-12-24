@@ -1,4 +1,4 @@
-# Dynamicloud Ruby API v1.0.5
+# Dynamicloud Ruby API v1.0.6
 This Ruby API  helps you to use the power of Dynamicloud.  This API follows our Rest documentation to execute CRUD operations according to http methods.
 
 #Requirements
@@ -7,7 +7,7 @@ Ruby SDK 2.1.5 and later, you can download it on [Ruby  site](https://www.ruby-l
 
 #Main files
 
-- You can install this gem in your system using RubyGems command **'gem install dynamicloud'** or put in your gemfile the following: **gem 'dynamicloud', '1.0.5'**
+- You can install this gem in your system using RubyGems command **'gem install dynamicloud'** or put in your gemfile the following: **gem 'dynamicloud', '1.0.6'**
 - **example/blog-test**
 
 #Rubydoc
