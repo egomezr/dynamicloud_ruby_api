@@ -1,7 +1,5 @@
-# Dynamicloud Ruby API v1.0.3 (BETA)
+# Dynamicloud Ruby API v1.1.3
 This Ruby API  helps you to use the power of Dynamicloud.  This API follows our Rest documentation to execute CRUD operations according to http methods.
-
-####**If you want to test Dynamicloud as a beta tester, please send an email to: social@dynamicloud.org with your Name and Country.**
 
 #Requirements
 
@@ -9,12 +7,12 @@ Ruby SDK 2.1.5 and later, you can download it on [Ruby  site](https://www.ruby-l
 
 #Main files
 
-- You can install this gem in your system using RubyGems command **'gem install dynamicloud'** or put in your gemfile the following: **gem 'dynamicloud', '~> 1.0'**
+- You can install this gem in your system using RubyGems command **'gem install dynamicloud'** or put in your gemfile the following: **gem 'dynamicloud', '1.1.3'**
 - **example/blog-test**
 
 #Rubydoc
 
-To read the Ruby API documentation click [here](http://www.rubydoc.info/gems/dynamicloud/1.0.3 "Dynamicloud Ruby API documentation")
+To read the Ruby API documentation click [here](http://www.rubydoc.info/gems/dynamicloud/1.0.4 "Dynamicloud Ruby API documentation")
 
 # Getting started
 
@@ -28,6 +26,8 @@ This API provides components to execute operations on [Dynamicloud](http://www.d
   1. [RecordResults](#recordresults)
   - [Condition](#conditions-class)
   - [Conditions](#conditions-class)
+  - [Between condition](#between-condition)
+  - [Exists condition](#exists-condition)
   - [Join clause](#join-clause)
   - [Next, Offset and Count methods](#next-offset-and-count-methods)
   - [Order by](#order-by)
@@ -205,6 +205,9 @@ def self.not_in(left, values)
 def self.like(left, like)
 def self.not_like(left, like)
 def self.equals(left, right)
+def self.between(field, left, right)
+def self.exists(model_id = nil, aliass = nil)
+def self.not_exists(model_id = nil, aliass = nil)
 def self.not_equals(left, right)
 def self.greater_equals(left, right)
 def self.greater_than(left, right)
@@ -242,6 +245,121 @@ These two calls of add method will produce something like this:
 name like 'Eleazar%' **AND** age = 33
 
 Query class provides a method called **get_results(projection = nil)**, this method will execute a request using the *ModelID*, *Conditions* and the *projection* (if was passed). The response from Dynamicloud will be encapsulated in the object **RecordResults**
+
+#Between condition
+
+With this condition you can build selections like **age between 24 and 30** or **birthdate bewteen '2010-01-01 00:00:00' and '2015-11-01 23:59:59'**.
+
+**A Between condition is composed by: field's identifier and an interval (left and right)**
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => '...'})
+
+query = provider.create_query(123)
+query.add(Dynamicloud::API::Criteria::Conditions.between('agefield', 20, 25))
+
+results = query.get_results
+.
+.
+.
+```
+
+**Using dates:**
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => '...'})
+
+query = provider.create_query(123)
+query.add(Dynamicloud::API::Criteria::Conditions.between('birthdate', '2010-01-01 00:00:00', '2015-11-01 23:59:59'))
+
+results = query.get_results
+.
+.
+.
+```
+
+#Exists condition
+
+Exists condition is a way to execute correlated queries and get results if a specific condition is true.  For example, imagine the following SQL query:
+
+```sql
+-- Here we want to get the VIP users
+SELECT * FROM users u WHERE EXISTS (SELECT * FROM vip_users v WHERE v.user_id = u.id)
+```
+
+**Let's do it using Dynamicloud's library:**
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => '...'})
+
+query = provider.create_query(userModel)
+
+# This is the alias to the Model, this alias is necessary if you need to execute an exists using two models
+query.set_alias("u")
+
+exists = Dynamicloud::API::Criteria::Conditions.exists(vipmodel, 'v')
+
+# The dollar symbols are to avoid to use right part as a String, but literally v.user_id = u.id
+exists.add(Dynamicloud::API::Criteria::Conditions.equals('v.user_id', '$u.id$'))
+
+query.add(exists)
+
+results = query.get_results
+.
+.
+.
+```
+
+**If you want to get the users without vip label:**
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => '...'})
+
+query = provider.create_query(userModel)
+
+# This is the alias to the Model, this alias is necessary if you need to execute an exists using two models
+query.set_alias("u")
+
+exists = Dynamicloud::API::Criteria::Conditions.not_exists(vipmodel, 'v')
+
+# The dollar symbols are to avoid to use right part as a String, but literally v.user_id = u.id
+exists.add(Dynamicloud::API::Criteria::Conditions.equals('v.user_id', '$u.id$'))
+
+query.add(exists)
+
+results = query.get_results
+.
+.
+.
+```
+
+**Another capability in Exists condition is the JoinClauses to execute correlated queries with Joins, for example:**
+```sql
+SELECT * FROM users u WHERE EXISTS (SELECT * FROM vip_users v JOIN vip_country c ON c.vip_id = v.id WHERE v.user_id = u.id AND c.country_iso = 'BR')
+```
+
+```ruby
+provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => '...'})
+
+query = provider.create_query(userModel)
+
+# This is the alias to the Model, this alias is necessary if you need to execute an exists using two models
+query.set_alias('u')
+
+exists = Dynamicloud::API::Criteria::Conditions.exists(vipmodel, 'v')
+
+exists.join(Dynamicloud::API::Criteria::Conditions.innerJoin(countryModel, 'c', 'c.vip_id = v.id'))
+
+# The dollar symbols are to avoid to use right part as a String, but literally v.user_id = u.id
+exists.add(Dynamicloud::API::Criteria::Conditions.and(Dynamicloud::API::Criteria::Conditions.equals('v.user_id', '$u.id$'), Dynamicloud::API::Criteria::Conditions.equals('c.country_iso', 'BR')))
+
+query.add(exists)
+
+results = query.get_results
+.
+.
+.
+```
 
 #Join Clause
 
