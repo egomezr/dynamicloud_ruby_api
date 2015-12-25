@@ -8,6 +8,8 @@ module DynamicService
   # @version 1.0.0
   # @since 8/22/15
   class ServiceCaller
+    GEM_ROOT = File.expand_path('../..', __FILE__)
+
     #@param service_url this the url to invoke
     #@param params optional params that will be attached to the request
     #@param method http method that will be used
@@ -16,6 +18,7 @@ module DynamicService
     def self.call_service(service_url, params = {}, method = 'post', headers = {}, destiny = nil)
       http = HTTPClient.new
       http.connect_timeout = 10
+      http.ssl_config.set_trust_ca("#{GEM_ROOT}/lib/cacert.pem")
 
       headers['User-Agent'] = 'Dynamicloud client'
       headers['API_Version'] = Configuration::PROPERTIES.get_property :version

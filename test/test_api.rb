@@ -400,21 +400,6 @@ class TestApi < Test::Unit::TestCase
     assert_equal %w(01 02), record['password']
   end
 
-  def test_share_down_upload_file
-    @provider.upload_file @model_id, 2, 'photo', File.new(FILE_PATH, 'r'), 'application/txt', 'ThisIsAnExample.sql'
-
-    link = @provider.share_file @model_id, 2, 'photo'
-    assert !link.nil?
-
-    if File.exists? TEST_CASE_FILE
-      File.delete TEST_CASE_FILE
-    end
-
-    @provider.download_file @model_id, 2, 'photo', File.new(TEST_CASE_FILE, 'w')
-
-    assert File.exists?(TEST_CASE_FILE)
-  end
-
   def test_alias_presence_join
     begin
       provider = Dynamicloud::API::DynamicProvider.new({:csk => CSK,

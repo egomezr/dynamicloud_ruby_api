@@ -11,7 +11,7 @@ class Configuration
   # Load the current properties in config.yml.
   def initialize
     @config = {
-        :url => 'http://api.dynamicloud.org',
+        :url => 'https://api.dynamicloud.org',
         # this url must be executed using post method
         :url_get_records => '/api_models/{csk}/{aci}/get_records/{mid}/{count}/{offset}/',
         # this url must be executed using post method
@@ -40,7 +40,7 @@ class Configuration
         :url_update_selection => '/api_records/{csk}/{aci}/update_using_selection/{mid}',
         # this url must be executed using post method
         :url_delete_selection => '/api_records/{csk}/{aci}/delete_using_selection/{mid}',
-        :version => '1.0.4'
+        :version => '1.1.3'
     }
   end
 
