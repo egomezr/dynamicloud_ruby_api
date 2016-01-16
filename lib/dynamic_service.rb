@@ -18,12 +18,14 @@ module DynamicService
     def self.call_service(service_url, params = {}, method = 'post', headers = {}, destiny = nil)
       http = HTTPClient.new
       http.connect_timeout = 10
-      http.ssl_config.set_trust_ca("#{GEM_ROOT}/lib/cacert.pem")
+      if service_url.start_with? 'https'
+        http.ssl_config.set_trust_ca("#{GEM_ROOT}/lib/cacert.pem")
+      end
 
       headers['User-Agent'] = 'Dynamicloud client'
-      headers['API_Version'] = Configuration::PROPERTIES.get_property :version
-      headers['Dynamicloud_API'] = 'Ruby'
-      headers['Accept-Encoding'] = 'gzip, deflate'
+      headers['API-Version'] = Configuration::PROPERTIES.get_property :version
+      headers['Dynamicloud-API'] = 'Ruby'
+      headers['Accept-Encoding'] = 'deflate'
 
       # download file
       if destiny
