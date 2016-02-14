@@ -440,7 +440,7 @@ query.set_offset(1).set_count(1)
 
 results = query.get_results
 results.records.each do |record|
-  String email = record['email']
+  email = record['email']
 end
 
 #This call will fetch max 10 records and will start from twenty first record.
