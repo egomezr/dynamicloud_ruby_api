@@ -180,7 +180,7 @@ With the Query object we can add conditions like EQUALS, IN, OR, AND, GREATER TH
 - **fast_returned_size:** The returned size of records that have matched with Query conditions
 - **records:** A list of records.
 
-**The uses of this class would be as a follow:**
+**The uses of this class would be as follow:**
 
 ```ruby
 provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
