@@ -404,7 +404,7 @@ Query class provides a method to walk across the records of a Model.  Imagine a 
 
 The method to meet this goal is **next**.  Basically, the next method will increase the offset automatically and will execute the request with the previous conditions. By default, offset and count will have 0 and 15 respectively.
 
-**The uses of this method would be as a follow:**
+**The uses of this method would be as follow:**
 
 ```ruby
 provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
