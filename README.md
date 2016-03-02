@@ -3,7 +3,7 @@ This Ruby API  helps you to use the power of Dynamicloud.  This API follows our 
 
 #Requirements
 
-Ruby SDK 2.1.5 and later, you can download it on [Ruby  site](https://www.ruby-lang.org/en/downloads/ "Download Ruby")
+Ruby SDK 2.1.5 or later, you can download it on [Ruby  site](https://www.ruby-lang.org/en/downloads/ "Download Ruby")
 
 #Main files
 
