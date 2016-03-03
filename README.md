@@ -7,7 +7,7 @@ Ruby SDK 2.1.5 or later, you can download it on [Ruby  site](https://www.ruby-la
 
 #Main files
 
-- You can install this gem in your system using RubyGems command **'gem install dynamicloud'** or put in your gemfile the following: **gem 'dynamicloud'**
+- You can install this gem in your system using RubyGems command `gem install dynamicloud` or put in your gemfile the following: `gem 'dynamicloud'`
 - **example/blog-test**
 
 #Rubydoc
@@ -40,16 +40,16 @@ These components will allow you to connect on Dynamicloud servers, authenticate 
 
 # Model
 
-To load records in this API you're going to use a **Model ID**.  Every record belongs to a Model.
+To load records in this API you're going to use a `Model ID`.  Every record belongs to a Model.
 
 #Credential
 
 To gain access in Dynamicloud servers you need to provide the API keys.  These APIs ware provided at moment of your registration.
 
 #DynamicProvider
-**Dynamicloud::API::DynamicProvider**
+`Dynamicloud::API::DynamicProvider`
 
-**DynamicProvider** provides important methods and can be used as follow:
+`DynamicProvider` provides important methods and can be used as follow:
 ```ruby
 module Dynamicloud
   class API
@@ -142,7 +142,7 @@ provider.delete_record mid, rid
  ```ruby
 def create_query(mid)
 ```
-This method returns a Query **(Dynamicloud::API::RecordQuery)**  to get records according specific conditions.
+This method returns a Query `(Dynamicloud::API::RecordQuery)`  to get records according specific conditions.
 
 **For example, a call of this method would be:**
  ```ruby
@@ -220,7 +220,7 @@ def self.right_outer_join(model_id, aliass, condition)
 def self.inner_join(model_id, aliass, condition)
 ```
 
-To add conditions to a Query object it must call the add method **(query.add(condition))**
+To add conditions to a Query object it must call the add method `(query.add(condition))`
 
 **For example:**
 
@@ -242,13 +242,13 @@ query.add(Dynamicloud::API::Criteria::Conditions.equals('age', 33))
 
 These two calls of add method will produce something like this:
 
-name like 'Eleazar%' **AND** age = 33
+name like 'Eleazar%' AND age = 33
 
-Query class provides a method called **get_results(projection = nil)**, this method will execute a request using the *ModelID*, *Conditions* and the *projection* (if was passed). The response from Dynamicloud will be encapsulated in the object **RecordResults**
+Query class provides a method called `get_results(projection = nil)`, this method will execute a request using the *ModelID*, *Conditions* and the *projection* (if was passed). The response from Dynamicloud will be encapsulated in the object `RecordResults`
 
 #Between condition
 
-With this condition you can build selections like **age between 24 and 30** or **birthdate bewteen '2010-01-01 00:00:00' and '2015-11-01 23:59:59'**.
+With this condition you can build selections like `age between 24 and 30` or `birthdate bewteen '2010-01-01 00:00:00' and '2015-11-01 23:59:59'`.
 
 **A Between condition is composed by: field's identifier and an interval (left and right)**
 
@@ -402,7 +402,7 @@ end
 
 Query class provides a method to walk across the records of a Model.  Imagine a model with a thousand of records, obviously you shouldn't load the whole set of records, you need to find a way to load a sub-set by demand.
 
-The method to meet this goal is **next**.  Basically, the next method will increase the offset automatically and will execute the request with the previous conditions. By default, offset and count will have 0 and 15 respectively.
+The method to meet this goal is `next`.  Basically, the next method will increase the offset automatically and will execute the request with the previous conditions. By default, offset and count will have 0 and 15 respectively.
 
 **The uses of this method would be as follow:**
 
@@ -426,7 +426,7 @@ results.records.each do |record|
 end
 ```
 
-If you want to set an **offset** or **count**, follow this guideline:
+If you want to set an `offset` or `count`, follow this guideline:
 
 ```ruby
 provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
@@ -473,7 +473,7 @@ end
 
 #Group by and Projection
 
-To group by a specifics fields, the query object provides the method `group_by`.  To use this clause, you must set the projection to the query using **set_projection** method.
+To group by a specifics fields, the query object provides the method `group_by`.  To use this clause, you must set the projection to the query using `set_projection` method.
 
 ```ruby
 provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
@@ -513,7 +513,7 @@ average = record['average']
 
 There are situations where you need to update records using a specific selection.
 
-In this example we are going to update the **name** where age > 24
+In this example we are going to update the `name where age > 24`
 
 ```ruby
 provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
