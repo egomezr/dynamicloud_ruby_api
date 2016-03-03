@@ -436,7 +436,7 @@ query.add(Dynamicloud::API::Criteria::Conditions.like('name', 'Eleaz%'))
 query.add(Dynamicloud::API::Criteria::Conditions.equals('age', 33))
 
 #Every call will fetch max 10 records and will start from eleventh record.
-query.set_offset(1).set_count(1)
+query.set_offset(10).set_count(10)
 
 results = query.get_results
 results.records.each do |record|
@@ -454,7 +454,7 @@ end
 
 #Order by
 
-To fetch records ordered by a specific field, the query object provides the method **order_by**.  To sort the records in a descending/ascending order you must call asc/desc method after call order_by method.
+To fetch records ordered by a specific field, the query object provides the method `order_by`.  To sort the records in a descending/ascending order you must call asc/desc method after call order_by method.
 
 ```ruby
 provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
@@ -473,7 +473,7 @@ end
 
 #Group by and Projection
 
-To group by a specifics fields, the query object provides the method **group_by**.  To use this clause, you must set the projection to the query using **set_projection** method.
+To group by a specifics fields, the query object provides the method `group_by`.  To use this clause, you must set the projection to the query using **set_projection** method.
 
 ```ruby
 provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'aci#...'})
@@ -483,7 +483,7 @@ query.add(Dynamicloud::API::Criteria::Conditions.like('name', 'Eleaz%'))
 query.add(Dynamicloud::API::Criteria::Conditions.equals('age', 33))
 
 #Every call will fetch max 10 records and will start from eleventh record.
-query.set_count(10).set_offset(1).order_by('email').asc # Here you can call desc method
+query.set_count(10).set_offset(10).order_by('email').asc # Here you can call desc method
 
 #These are the fields in your projection
 query.group_By('name, email');
@@ -521,7 +521,7 @@ provider = Dynamicloud::API::DynamicProvider.new({:csk => 'csk#...', :aci => 'ac
 query = provider.create_query(mid)
 query.add(Dynamicloud::API::Criteria::Conditions.greater_than('age', 24))
 
-# This method will use the data hash and the query object to update only the records that match with the selection.
+# This method will use the query object to delete only the records that match with the selection.
 
 provider.update query, {'name' => 'Eleazar'}
 ```
