@@ -13,6 +13,6 @@ group :test do
   gem 'test-unit'
 end
 
-require 'minitest/reporters'
+#require 'minitest/reporters'
 
-MiniTest::Reporters.use!
+#MiniTest::Reporters.use!
