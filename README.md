@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/dynamicloud/dynamicloud_ruby_api.svg?branch=master)](https://travis-ci.org/dynamicloud/dynamicloud_ruby_api) [![Gem Version](https://badge.fury.io/rb/dynamicloud.svg)](https://badge.fury.io/rb/dynamicloud)
+[![Build Status](https://travis-ci.org/dynamicloud/dynamicloud_ruby_api.svg?branch=master)](https://travis-ci.org/dynamicloud/dynamicloud_ruby_api) 
 
-# Dynamicloud Ruby API v1.1.5
+# Dynamicloud Ruby API [![Gem Version](https://badge.fury.io/rb/dynamicloud.svg)](https://badge.fury.io/rb/dynamicloud)
 This Ruby API  helps you to use the power of Dynamicloud.  This API follows our Rest documentation to execute CRUD operations according to http methods.
 
 #Requirements
